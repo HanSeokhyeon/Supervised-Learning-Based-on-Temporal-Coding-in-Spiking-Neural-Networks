@@ -20,20 +20,21 @@ for epoch in range(100000):
 
     running_loss = 0.0
 
-    # get the inputs; data is a list of [inputs, labels]
-    inputs, labels = data
+    for i in range(4):
+        # get the inputs; data is a list of [inputs, labels]
+        inputs, labels = data[0][i], data[1][i]
 
-    # zero the parameters gradients
-    optimizer.zero_grad()
+        # zero the parameters gradients
+        optimizer.zero_grad()
 
-    # forward + backward + optimize
-    outputs = net(inputs)
-    loss = criterion(outputs, labels)
-    loss.backward()
-    optimizer.step()
+        # forward + backward + optimize
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
 
-    # print statistics
-    running_loss += loss.item()
+        # print statistics
+        running_loss += loss.item()
 
     print('[%d] loss: %.3f' % (epoch + 1, running_loss / datasize))
 
