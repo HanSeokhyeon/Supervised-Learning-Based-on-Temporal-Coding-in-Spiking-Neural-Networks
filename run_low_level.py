@@ -18,15 +18,11 @@ dim_out = 2
 
 dtype_float = torch.FloatTensor
 
-z0 = Variable(torch.randn(dim_x), requires_grad=False)
-
-W0 = Variable(torch.randn(dim_x, dim_h), requires_grad=True)
-
-z1 = Variable(torch.randn(dim_h), requires_grad=False)
-
-W1 = Variable(torch.randn(dim_h, dim_out), requires_grad=True)
-
-z2 = Variable(torch.randn(dim_out), requires_grad=False)
+z0 = Variable(torch.randn(dim_x))
+W0 = Variable(torch.randn(dim_h, dim_x))
+z1 = Variable(torch.randn(dim_h))
+W1 = Variable(torch.randn(dim_out, dim_h))
+z2 = Variable(torch.randn(dim_out))
 
 
 def model(x, W0, W1):
@@ -38,14 +34,14 @@ def model(x, W0, W1):
 
 
 def spike_layer(z, W):
-    N = W.size()[1]
-    z_next = Variable(torch.randn(N), requires_grad=False)
+    N = W.size()[0]
+    z_next = Variable(torch.zeros(N))
     for i in range(N):
-        C = get_causal_set(z, W[:, i])
+        C = get_causal_set(z, W[i, :])
         if C.size()[0]:
-            z_next[i] = W[:, C].sum() * z[C] / (W[:, C].sum() - 1)
+            z_next[i] = W[i, C].sum() * z[C].sum() / (W[i, C].sum() - 1)
         else:
-            z_next[i] = math.inf
+            z_next[i] = 3.4028235 * np.power(10, 38)
     return z_next
 
 
@@ -60,20 +56,22 @@ def get_causal_set(zr_1, wr):
             next_input_spike = math.inf
         else:
             next_input_spike = z_sorted[i+1]
-
-        first_cond = w_sorted.sum() > 1
+        sum = w_sorted.sum()
+        first_cond = sum > 1
         second_cond = w_sorted.sum() * z_sorted.sum() / (w_sorted.sum() - 1) < next_input_spike
         if first_cond != second_cond:
-            return sort_indices[:i]
+            return sort_indices[:i+1]
     return torch.Tensor([])
 
 
 for epoch in range(epochs):
     for i in range(train_num):
-        y_out = model(x[i], W0, W1)
-        t = y[i].type(torch.ByteTensor)
-        loss = -torch.log(torch.exp(-y_out[t.item()]) / torch.exp(-y_out).sum())
-        loss.backward()
+        zL = Variable(model(x[i], W0, W1), requires_grad=True)
+
+        g = y[i].type(torch.ByteTensor).item()
+        softmax = torch.exp(-zL[g]) / torch.exp(-zL).sum()
+        loss = -torch.log(softmax)
+        loss.backward(zL)
 
         W0.data -= learning_rate * W0.grad.data
         W1.data -= learning_rate * W1.grad.data
