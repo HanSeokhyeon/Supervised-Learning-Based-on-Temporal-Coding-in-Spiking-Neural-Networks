@@ -51,11 +51,12 @@ class SNN:
         N = W.size()[0]
         z_next = torch.zeros(N)
         for i in range(N):
-            C.append(self.get_causal_set(z, W[i, :]))
-            if C[i].size()[0]:
-                z_next[i] = W[i, C[i]].sum() * z[C[i]].sum() / (W[i, C[i]].sum() - 1)
+            tmp_C = self.get_causal_set(z, W[i, :])
+            if tmp_C.size()[0]:
+                z_next[i] = W[i, tmp_C].sum() * z[tmp_C].sum() / (W[i, tmp_C].sum() - 1)
+                C.append(tmp_C)
             else:
-                z_next[i] = 3.4028235 * np.power(10, 38)
+                z_next[i] = np.power(10, 25)
         return z_next
 
     # gets indices of input spikes influencing first spike time of output neuron
@@ -83,18 +84,21 @@ class SNN:
     def gradient_descent(self):
         for epoch in range(self.epochs):
             for i in range(self.train_num):
-                self.backprop(x[i], y[i])
+                nabla_loss_W0, nabla_loss_W1 = self.backprop(x[i], y[i])
+                self.W1 = self.learning_rate * self.update(self.W1, nabla_loss_W1)
+                self.W0 = self.learning_rate * self.update(self.W0, nabla_loss_W0)
+
                 pass
 
             print("%d" % epoch)
 
-    def update(self):
-        pass
+    def update(self, w, nabla):
+        w -= nabla
+
+        return w
+
 
     def backprop(self, x, y):
-        # initialization
-        nabla_W0 = torch.zeros(self.W0.size())
-        nabla_W1 = torch.zeros(self.W1.size())
 
         # feedforward
         zL = Variable(self.model(x), requires_grad=True)
@@ -107,15 +111,17 @@ class SNN:
         loss.backward(zL)
         delta = zL.grad.data
 
-        for i, c_tensor in enumerate(self.C2):
-            for j in c_tensor.numpy():
-                nabla_W1[i, j] = (self.z1[j]-self.z2[i]) / (self.W1[i, :].sum() - 1)
+        nabla_W1 = self.get_nabla_W(self.z2, self.z1, self.W1, self.C2)
+        nabla_W0 = self.get_nabla_W(self.z1, self.z0, self.W0, self.C1)
 
-        tmp_nabla_W1 = self.get_nabla(self.z2, self.z1, self.W1, self.C2)
+        nabla_z1 = self.get_nabla_z(self.W1, self.C2)
 
-        return
+        nabla_loss_W1 = torch.mul(delta, nabla_W1.transpose(0, 1)).transpose(0, 1)
+        nabla_loss_W0 = torch.mul(torch.mul(delta, nabla_z1.transpose(0, 1)).transpose(0, 1), nabla_W0.transpose(0, 1)).transpose(0, 1)
 
-    def get_nabla(self, z_out, z_p, w_p, c):
+        return nabla_loss_W0, nabla_loss_W1
+
+    def get_nabla_W(self, z_out, z_p, w_p, c):
         nabla_W = torch.zeros(w_p.size())
         for i, c_tensor in enumerate(c):
             for j in c_tensor.numpy():
@@ -123,6 +129,13 @@ class SNN:
 
         return nabla_W
 
+    def get_nabla_z(self, w_p, c):
+        nabla_z = torch.zeros(w_p.size())
+        for i, c_tensor in enumerate(c):
+            for j in c_tensor.numpy():
+                nabla_z[i, j] = w_p[i, j] / (w_p[i, :].sum() - 1)
+
+        return nabla_z
 
     def evaluate(self):
         pass
