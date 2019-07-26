@@ -5,13 +5,14 @@ import numpy as np
 
 x, y = load_xor_time()
 
-snn = SNN(x, y)
-snn.gradient_descent()
+for i in range(10):
+    snn = SNN(x, y)
+    snn.gradient_descent()
 
-np.savetxt("loss.csv", snn.loss_data, delimiter=',')
+    np.savetxt("loss%d.csv" % i, snn.loss_data, delimiter=',')
 
-plt.plot(snn.loss_data)
-# plt.ylim(0, 1)
-plt.show()
+    plt.plot(snn.loss_data)
+
+    plt.show()
 
 pass

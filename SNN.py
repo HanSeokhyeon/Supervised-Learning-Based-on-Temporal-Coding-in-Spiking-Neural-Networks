@@ -66,7 +66,7 @@ class SNN:
     # gets indices of input spikes influencing first spike time of output neuron
     # input: zr_1: Vector of input spike times of length N
     # input: wr: Weight vector of the input spikes
-    # O
+    # Output: C: Causal index set
     def get_causal_set(self, zr_1, wr):
         sort_indices = torch.argsort(zr_1)
         z_sorted = zr_1[sort_indices]

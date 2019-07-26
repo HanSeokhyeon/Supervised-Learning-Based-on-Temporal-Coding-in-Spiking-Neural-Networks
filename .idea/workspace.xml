@@ -6,9 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1ce357d-41ef-4fbb-83d2-e4de4a379011" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/SNN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loss.csv" beforeDir="false" afterPath="$PROJECT_DIR$/loss.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loss.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/run_low_level.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_low_level.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_low_level.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="4" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+            <state relative-caret-position="255">
+              <caret line="17" column="4" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -45,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="96" column="41" lean-forward="true" selection-start-line="96" selection-start-column="41" selection-end-line="96" selection-end-column="41" />
+            <state relative-caret-position="450">
+              <caret line="99" selection-start-line="99" selection-end-line="99" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -88,8 +86,8 @@
         <option value="$PROJECT_DIR$/net.py" />
         <option value="$PROJECT_DIR$/data.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/run_low_level.py" />
         <option value="$PROJECT_DIR$/SNN.py" />
+        <option value="$PROJECT_DIR$/run_low_level.py" />
       </list>
     </option>
   </component>
@@ -262,16 +260,15 @@
       <workItem from="1563781778014" duration="12370000" />
       <workItem from="1563944579740" duration="12346000" />
       <workItem from="1564025754041" duration="17216000" />
-      <workItem from="1564106496850" duration="8771000" />
+      <workItem from="1564106496850" duration="11606000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50703000" />
+    <option name="totallyTimeSpent" value="53538000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14285715" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -293,7 +290,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" x="1920" y="28" width="1920" height="1172" id="SciView" maximized="true" order="3" sideWeight="0.497545" type="WINDOWED" visible="true" weight="0.32684824" />
+      <window_info anchor="right" x="1920" y="28" width="1920" height="1172" id="SciView" maximized="true" order="3" sideWeight="0.497545" type="WINDOWED" weight="0.32684824" />
       <window_info anchor="right" id="Database" order="4" weight="0.32962757" />
       <window_info anchor="right" x="0" y="0" width="413" height="855" id="Documentation" order="5" sideWeight="0.502455" side_tool="true" weight="0.32684824" />
     </layout>
@@ -314,7 +311,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor.coverage" NAME="run_xor Coverage Results" MODIFIED="1563865621502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_low_level.coverage" NAME="run_low_level Coverage Results" MODIFIED="1564116111413" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_low_level.coverage" NAME="run_low_level Coverage Results" MODIFIED="1564126055696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$net.coverage" NAME="net Coverage Results" MODIFIED="1563787389713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
@@ -448,22 +445,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_low_level.py">
+    <entry file="file://$PROJECT_DIR$/SNN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="4" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        <state relative-caret-position="450">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SNN.py">
+    <entry file="file://$PROJECT_DIR$/run_low_level.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="96" column="41" lean-forward="true" selection-start-line="96" selection-start-column="41" selection-end-line="96" selection-end-column="41" />
+        <state relative-caret-position="255">
+          <caret line="17" column="4" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
