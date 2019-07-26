@@ -1,6 +1,6 @@
 # Supervised Learning Based on Temporal Coding in Spiking Neural Networks
 
-This project is spiking neural networks for XOR and MNIST using PyTorch.
+This project is spiking neural networks for XOR and MNIST using PyTorch.  
 Look at this [article](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7999227)
 
 ## XOR networks architecture: DNN(2, 4, 2)  
