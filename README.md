@@ -1,8 +1,9 @@
 # Supervised Learning Based on Temporal Coding in Spiking Neural Networks
 
 This project is spiking neural networks for XOR and MNIST using PyTorch.
+Look at this [article](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7999227)
 
-#### XOR networks architecture: DNN(2, 4, 2)  
+## XOR networks architecture: DNN(2, 4, 2)  
     
     Epoch: 997	loss: 0.239180	zL[0]: 2.8021	zL[1]: 1.4935	prediction: 1	label: 1
     Epoch: 997	loss: 0.080076	zL[0]: 1.6987	zL[1]: -0.7858	prediction: 1	label: 1
@@ -17,7 +18,16 @@ This project is spiking neural networks for XOR and MNIST using PyTorch.
     Epoch: 999	loss: 0.007266	zL[0]: 5.5786	zL[1]: 10.4995	prediction: 0	label: 0
     Epoch: 999	loss: -0.000000	zL[0]: 41.2206	zL[1]: 78.2109	prediction: 0	label: 0
 
-#### MNIST networks architecture: DNN(784, 800, 10)
+## MNIST networks architecture: DNN(784, 800, 10)
 
     not yet
 
+## Authors
+
+* **HanSeokhyeon** - *Initial work* - [HanSeokhyeon](https://github.com/HanSeokhyeon)
+
+See also the list of [contributors](https://github.com/HanSeokhyeon/Spiking_neural_networks_for_MNIST/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
