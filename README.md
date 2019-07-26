@@ -1,30 +1,23 @@
-# Deep Learning with PyTorch
+# Supervised Learning Based on Temporal Coding in Spiking Neural Networks
 
-This project is learning the neural networks for XOR and MNIST using PyTorch.
+This project is spiking neural networks for XOR and MNIST using PyTorch.
 
-####XOR networks architecture: DNN(2, 4, 2)  
-loss : 
-      
-       [9.9854952e-01 1.4504353e-03]
-       [7.7366392e-04 9.9922633e-01] 
-       [6.2815300e-03 9.9371850e-01]
-       [9.9889624e-01 1.1037140e-03]
-predicted : [0 1 1 0]       
-
-
-####MNIST networks architecture: DNN(784, 800, 10)
-
-    [1] loss: 1.692
-    [2] loss: 1.556
-    [3] loss: 1.538
-    [4] loss: 1.527
-    [5] loss: 1.519
-    [6] loss: 1.513
-    [7] loss: 1.508
-    [8] loss: 1.504
-    [9] loss: 1.500
-    [10] loss: 1.497
-    Finished Training
+#### XOR networks architecture: DNN(2, 4, 2)  
     
-    Accuracy: 0.9653
+    Epoch: 997	loss: 0.239180	zL[0]: 2.8021	zL[1]: 1.4935	prediction: 1	label: 1
+    Epoch: 997	loss: 0.080076	zL[0]: 1.6987	zL[1]: -0.7858	prediction: 1	label: 1
+    Epoch: 997	loss: 0.007135	zL[0]: 5.5779	zL[1]: 10.5171	prediction: 0	label: 0
+    Epoch: 997	loss: -0.000000	zL[0]: 41.2153	zL[1]: 78.3343	prediction: 0	label: 0
+    Epoch: 998	loss: 0.239951	zL[0]: 2.8027	zL[1]: 1.4978	prediction: 1	label: 1
+    Epoch: 998	loss: 0.080079	zL[0]: 1.6988	zL[1]: -0.7857	prediction: 1	label: 1
+    Epoch: 998	loss: 0.007200	zL[0]: 5.5782	zL[1]: 10.5083	prediction: 0	label: 0
+    Epoch: 998	loss: -0.000000	zL[0]: 41.2180	zL[1]: 78.2725	prediction: 0	label: 0
+    Epoch: 999	loss: 0.240725	zL[0]: 2.8034	zL[1]: 1.5020	prediction: 1	label: 1
+    Epoch: 999	loss: 0.080083	zL[0]: 1.6988	zL[1]: -0.7856	prediction: 1	label: 1
+    Epoch: 999	loss: 0.007266	zL[0]: 5.5786	zL[1]: 10.4995	prediction: 0	label: 0
+    Epoch: 999	loss: -0.000000	zL[0]: 41.2206	zL[1]: 78.2109	prediction: 0	label: 0
+
+#### MNIST networks architecture: DNN(784, 800, 10)
+
+    not yet
 
