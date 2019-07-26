@@ -1,7 +1,6 @@
 from torch.autograd import Variable
 import torch
 import math
-import copy
 
 
 class SNN:
@@ -9,8 +8,8 @@ class SNN:
     def __init__(self, x, y):
         # hyperparameter
         self.k = 10
-        self.learning_rate = 0.01
-        self.epochs = 1000
+        self.learning_rate = 0.1
+        self.epochs = 100
         self.train_num = 4
 
         # model size
@@ -31,16 +30,17 @@ class SNN:
         # result
         self.loss_data = []
 
-
         # input data
         self.x = x
         self.y = y
 
     # model graph
     def model(self, x):
+        # initialize causal sets
         self.C1 = []
         self.C2 = []
 
+        # model
         self.z0 = torch.exp(x)
         self.z1 = self.spike_layer(self.z0, self.W0, self.C1)
         self.z2 = self.spike_layer(self.z1, self.W1, self.C2)
@@ -94,7 +94,10 @@ class SNN:
                 self.W0 = self.update(self.W0, nabla_loss_W0)
 
                 prediction = self.evaluate()
-                print("Epoch: %d\tloss: %f\tzL[0]: %.4f\tzL[1]: %.4f\tprediction: %d\tlabel: %d" % (epoch, self.loss, self.zL[0], self.zL[1], prediction, self.y[i].item()))
+
+                zL_str = list(map(lambda x: "inf" if x > 1e10 else str(x.item()), self.zL))
+                print("Epoch: %d\tloss: %f\tzL[0]: %s\tzL[1]: %s\tprediction: %d\tlabel: %d" % (epoch, self.loss, zL_str[0][:5], zL_str[1][:5], prediction, self.y[i].item()))
+
                 loss_sum += self.loss.item()
             self.loss_data.append(loss_sum)
 

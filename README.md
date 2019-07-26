@@ -22,6 +22,11 @@ Look at this [article](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7999
 
     not yet
 
+## Requirements
+* Python 3.6
+* PyTorch 1.1.0
+* CUDA>=9.0
+
 ## Authors
 
 * **HanSeokhyeon** - *Initial work* - [HanSeokhyeon](https://github.com/HanSeokhyeon)

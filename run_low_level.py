@@ -11,7 +11,7 @@ snn.gradient_descent()
 np.savetxt("loss.csv", snn.loss_data, delimiter=',')
 
 plt.plot(snn.loss_data)
-plt.ylim(0, 1)
+# plt.ylim(0, 1)
 plt.show()
 
 pass
