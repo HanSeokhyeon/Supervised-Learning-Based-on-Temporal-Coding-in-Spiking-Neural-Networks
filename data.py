@@ -25,6 +25,15 @@ def load_xor_time():
     return [x, y]
 
 
+def load_xor():
+    data = [[[0, 2], 1],
+            [[2, 0], 1],
+            [[0, 0], 0],
+            [[2, 2], 0]]
+
+    return data
+
+
 def load_MNIST_data():
     train_loader = torch.utils.data.DataLoader(
         torchvision.datasets.MNIST('../data', train=True, download=True,
