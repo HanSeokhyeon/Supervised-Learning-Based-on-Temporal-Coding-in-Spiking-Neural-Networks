@@ -143,7 +143,7 @@ class SNNWeightCostSum:
 
     def normalize_gradient(self, n_w, max_norm):
         for i in range(self.num_layers-1):
-            row_Frobenius_norm = torch.norm(n_w[i], 2, dim=1)
+            row_Frobenius_norm = torch.norm(n_w[i], 2, dim=1)# / self.sizes[i+1]
             for j, norm in enumerate(row_Frobenius_norm):
                 if norm > max_norm:
                     n_w[i][j] *= max_norm / norm

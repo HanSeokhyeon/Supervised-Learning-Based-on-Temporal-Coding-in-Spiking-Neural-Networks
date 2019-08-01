@@ -1,5 +1,5 @@
 from data import load_xor
-from SNN import SNNWeightCostSum
+from SNN_xor import SNNWeightCostSum
 
 data = load_xor()
 

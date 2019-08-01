@@ -1,5 +1,5 @@
 from data import load_xor
-from SNN import SNNMinibatch
+from SNN_xor import SNNMinibatch
 
 data = load_xor()
 

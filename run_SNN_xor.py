@@ -1,5 +1,5 @@
 from data import load_xor_time
-from SNN import SNN
+from SNN_xor import SNN
 import matplotlib.pyplot as plt
 import numpy as np
 
