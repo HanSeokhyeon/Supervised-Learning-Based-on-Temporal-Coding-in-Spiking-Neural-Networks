@@ -1,8 +1,325 @@
 from torch.autograd import Variable
+import torch.nn.functional as F
 import torch
 import math
 import random
 import numpy as np
+
+
+class SNNWeightCostSum:
+
+    def __init__(self, sizes):
+
+        self.num_layers = len(sizes)
+        self.sizes = sizes
+        self.weights = [torch.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+
+    def feedforward(self, x):
+        self.causal_sets = [[] for i in range(self.num_layers - 1)]
+        self.Z = []
+        self.Z.append(torch.exp(torch.tensor(x).type(torch.FloatTensor)))
+        for i, (w, c) in enumerate(zip(self.weights, self.causal_sets)):
+            self.Z.append(self.spike_layer(self.Z[i], w, c))
+
+        self.Z[-1].requires_grad_(True)
+
+        return Variable(self.Z[-1], requires_grad=True)
+
+    # forward pass in spiking networks
+    # input: z: vector of input spike times
+    # input: W: weight matrices. W[i, j] is the weight from neuron j in layer l - 1 to neuron i in layer l
+    # output: z_next: Vector of first spike times of neurons
+    def spike_layer(self, z, w, c):
+        N = w.size()[0]
+        z_next = torch.zeros(N)
+        for i in range(N):
+            tmp_c = self.get_causal_set(z, w[i, :])
+            c.append(tmp_c)
+            if tmp_c.size()[0]:
+                z_next[i] = torch.mul(w[i, tmp_c], z[tmp_c]).sum() / (w[i, tmp_c].sum() - 1)
+            else:
+                z_next[i] = torch.tensor(1000000000000000000)
+        return z_next
+
+    # gets indices of input spikes influencing first spike time of output neuron
+    # input: zr_1: Vector of input spike times of length N
+    # input: wr: Weight vector of the input spikes
+    # Output: C: Causal index set
+    @staticmethod
+    def get_causal_set(zr_1, wr):
+        sort_indices = torch.argsort(zr_1)
+        z_sorted = zr_1[sort_indices]
+        w_sorted = wr[sort_indices]
+
+        N = zr_1.size()[0]
+        for i in range(N):
+            if i == N-1:
+                next_input_spike = math.inf
+            else:
+                next_input_spike = z_sorted[i+1]
+            w_sum = w_sorted[:i+1].sum()
+            z_out = torch.mul(w_sorted[:i+1], z_sorted[:i+1]).sum() / (w_sorted[:i+1].sum() - 1)
+            first_cond = w_sum > 1
+            second_cond = z_out < next_input_spike
+            if first_cond != second_cond:
+                return sort_indices[:i+1]
+        return torch.Tensor([])
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta, K, max_norm, test_data=None):
+        if test_data:
+            n_test = len(test_data)
+        self.n = len(training_data)
+        for j in range(epochs):
+            # random.shuffle(training_data)
+            mini_batches = [training_data[k:k+mini_batch_size]
+                            for k in range(0, self.n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch(mini_batch, eta, K, max_norm)
+            if test_data:
+                print("Epoch %d: %d / %d" % (j, self.evaluate(test_data), n_test))
+            else:
+                print("Epoch: %d\tloss: %.8f\t" % (j, self.loss_average), end='')
+                self.evaluate(training_data)
+
+    def update_mini_batch(self, mini_batch, eta, K, max_norm):
+        nabla_weights = [torch.zeros(w.size())for w in self.weights]
+        self.loss_average = 0
+        for x, y in mini_batch:
+            delta_nabla_w = self.backprop(x, y, K, max_norm)
+            nabla_weights = [nw+dnw for nw, dnw in zip(nabla_weights, delta_nabla_w)]
+            self.loss_average += self.loss.item()/len(mini_batch)
+        self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_weights)]
+
+    def backprop(self, x, y, K, max_norm):
+        nabla_w = [torch.zeros(w.size()) for w in self.weights]
+
+        # feedforward
+        self.zL = self.feedforward(x)
+
+        # backward
+        delta = self.get_delta(y)
+        delta_wsc = self.get_delta_weight_sum_cost(K)
+
+        for l in range(1, self.num_layers):
+            nabla_w_l = self.get_nabla_W(self.Z[-l], self.Z[-(l+1)], self.weights[-l], self.causal_sets[-l])
+            nabla_w[-l] = torch.mul(delta, nabla_w_l.transpose(0, 1)).transpose(0, 1) + delta_wsc[-l]
+            nabla_z_l = self.get_nabla_z(self.weights[-l], self.causal_sets[-l])
+            delta = torch.mul(delta, nabla_z_l.transpose(0, 1)).transpose(0, 1)
+
+        nabla_w = self.normalize_gradient(nabla_w, max_norm)
+
+        return nabla_w
+
+    def get_delta(self, y):
+        g = torch.tensor(y) # label
+        softmax = torch.exp(-self.zL-torch.max(-self.zL)) / (torch.exp(-self.zL-torch.max(-self.zL)).sum())
+        y_one_hot = F.one_hot(g, num_classes=self.sizes[-1]).type(torch.FloatTensor)
+
+        self.loss = -torch.log(softmax[g])
+
+        # backward pass
+        delta = softmax - y_one_hot
+
+        return delta
+
+    def get_delta_weight_sum_cost(self, K):
+        delta_wsc = []
+
+        for i in range(self.num_layers-1):
+            input_weight = Variable(self.weights[i], requires_grad=True)
+            input_weight_sum = 1 - torch.sum(input_weight, dim=1)
+            input_weight_sum = torch.cat([torch.zeros(input_weight_sum.size()).view(-1, 1),
+                                          input_weight_sum.view(-1, 1)],
+                                          dim=1)
+            input_weight_sum, _ = input_weight_sum.max(dim=1)
+            input_weight_sum = input_weight_sum.sum()
+
+            weight_sum_cost = K * input_weight_sum
+
+            weight_sum_cost.backward()
+            delta_wsc.append(input_weight.grad.data)
+
+        return delta_wsc
+
+    def normalize_gradient(self, n_w, max_norm):
+        for i in range(self.num_layers-1):
+            row_Frobenius_norm = torch.norm(n_w[i], 2, dim=1)
+            for j, norm in enumerate(row_Frobenius_norm):
+                if norm > max_norm:
+                    n_w[i][j] *= max_norm / norm
+
+        return n_w
+
+    @staticmethod
+    def get_nabla_W(z_out, z_p, w_p, c):
+        nabla_W = torch.zeros(w_p.size())
+        for i, c_tensor in enumerate(c):
+            for j in c_tensor.numpy():
+                nabla_W[i, j] = (z_p[j]-z_out[i]) / (w_p[i, c_tensor].sum() - 1)
+
+        return nabla_W
+
+    @staticmethod
+    def get_nabla_z(w_p, c):
+        nabla_z = torch.zeros(w_p.size())
+        for i, c_tensor in enumerate(c):
+            for j in c_tensor.numpy():
+                nabla_z[i, j] = w_p[i, j] / (w_p[i, c_tensor].sum() - 1)
+
+        return nabla_z
+
+    def evaluate(self, eval_data):
+        eval_data = np.array(list(map(lambda x: x[0] + [x[1]], eval_data)))
+        eval_x = eval_data[:, :-1]
+        eval_y = eval_data[:, -1]
+        pred = []
+        for x in eval_x:
+            pred.append(torch.argmin(self.feedforward(x)).item())
+        eval_result = np.equal(pred, eval_y)
+        pred = list(map(str, pred))
+        eval_y = list(map(str, eval_y))
+        print("pred: %s\tlabel: %s\t%d / %d" % (' '.join(pred), ' '.join(eval_y), np.sum(eval_result), self.n))
+
+        return
+
+
+class SNNMinibatch:
+
+    def __init__(self, sizes):
+
+        self.num_layers = len(sizes)
+        self.sizes = sizes
+        self.weights = [torch.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+
+    def feedforward(self, x):
+        self.causal_sets = [[] for i in range(self.num_layers - 1)]
+        self.Z = []
+        self.Z.append(torch.exp(torch.tensor(x).type(torch.FloatTensor)))
+        for i, (w, c) in enumerate(zip(self.weights, self.causal_sets)):
+            self.Z.append(self.spike_layer(self.Z[i], w, c))
+
+        self.Z[-1].requires_grad_(True)
+
+        return Variable(self.Z[-1], requires_grad=True)
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta, test_data=None):
+        if test_data:
+            n_test = len(test_data)
+        self.n = len(training_data)
+        for j in range(epochs):
+            # random.shuffle(training_data)
+            mini_batches = [training_data[k:k+mini_batch_size]
+                            for k in range(0, self.n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch(mini_batch, eta)
+            if test_data:
+                print("Epoch %d: %d / %d" % (j, self.evaluate(test_data), n_test))
+            else:
+                print("Epoch: %d\tloss: %.8f\t" % (j, self.loss_average), end='')
+                self.evaluate(training_data)
+
+    def update_mini_batch(self, mini_batch, eta):
+        nabla_weights = [torch.zeros(w.size())for w in self.weights]
+        self.loss_average = 0
+        for x, y in mini_batch:
+            delta_nabla_w = self.backprop(x, y)
+            nabla_weights = [nw+dnw for nw, dnw in zip(nabla_weights, delta_nabla_w)]
+            self.loss_average += self.loss.item()/len(mini_batch)
+        self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_weights)]
+
+    def backprop(self, x, y):
+        nabla_w = [torch.zeros(w.size()) for w in self.weights]
+
+        # feedforward
+        self.zL = self.feedforward(x)
+        delta = self.get_delta(y)
+
+        for l in range(1, self.num_layers):
+            nabla_w_l = self.get_nabla_W(self.Z[-l], self.Z[-(l+1)], self.weights[-l], self.causal_sets[-l])
+            nabla_w[-l] = torch.mul(delta, nabla_w_l.transpose(0, 1)).transpose(0, 1)
+            nabla_z_l = self.get_nabla_z(self.weights[-l], self.causal_sets[-l])
+            delta = torch.mul(delta, nabla_z_l.transpose(0, 1)).transpose(0, 1)
+
+        return nabla_w
+
+    def get_delta(self, y):
+        g = y # label
+        softmax = torch.exp(-self.zL[g]) / torch.exp(-self.zL).sum()
+        self.loss = -torch.log(softmax)
+
+        # backward pass
+        self.loss.backward(self.zL)
+        delta = self.zL.grad.data
+
+        return delta
+
+    # forward pass in spiking networks
+    # input: z: vector of input spike times
+    # input: W: weight matrices. W[i, j] is the weight from neuron j in layer l - 1 to neuron i in layer l
+    # output: z_next: Vector of first spike times of neurons
+    def spike_layer(self, z, w, c):
+        N = w.size()[0]
+        z_next = torch.zeros(N)
+        for i in range(N):
+            tmp_c = self.get_causal_set(z, w[i, :])
+            if tmp_c.size()[0]:
+                z_next[i] = w[i, tmp_c].sum() * z[tmp_c].sum() / (w[i, tmp_c].sum() - 1)
+                c.append(tmp_c)
+            else:
+                z_next[i] = torch.pow(torch.tensor(10), 25)
+        return z_next
+
+    # gets indices of input spikes influencing first spike time of output neuron
+    # input: zr_1: Vector of input spike times of length N
+    # input: wr: Weight vector of the input spikes
+    # Output: C: Causal index set
+    def get_causal_set(self, zr_1, wr):
+        sort_indices = torch.argsort(zr_1)
+        z_sorted = zr_1[sort_indices]
+        w_sorted = wr[sort_indices]
+
+        N = zr_1.size()[0]
+        for i in range(N):
+            if i == N-1:
+                next_input_spike = math.inf
+            else:
+                next_input_spike = z_sorted[i+1]
+            sum = w_sorted.sum()
+            first_cond = sum > 1
+            second_cond = w_sorted.sum() * z_sorted.sum() / (w_sorted.sum() - 1) < next_input_spike
+            if first_cond != second_cond:
+                return sort_indices[:i+1]
+        return torch.Tensor([])
+
+    def get_nabla_W(self, z_out, z_p, w_p, c):
+        nabla_W = torch.zeros(w_p.size())
+        for i, c_tensor in enumerate(c):
+            for j in c_tensor.numpy():
+                nabla_W[i, j] = (z_p[j]-z_out[i]) / (w_p[i, :].sum() - 1)
+
+        return nabla_W
+
+    def get_nabla_z(self, w_p, c):
+        nabla_z = torch.zeros(w_p.size())
+        for i, c_tensor in enumerate(c):
+            for j in c_tensor.numpy():
+                nabla_z[i, j] = w_p[i, j] / (w_p[i, :].sum() - 1)
+
+        return nabla_z
+
+    def evaluate(self, eval_data):
+        eval_data = np.array(list(map(lambda x: x[0] + [x[1]], eval_data)))
+        eval_x = eval_data[:, :-1]
+        eval_y = eval_data[:, -1]
+        pred = []
+        for x in eval_x:
+            pred.append(torch.argmin(self.feedforward(x)).item())
+        eval_result = np.equal(pred, eval_y)
+        pred = list(map(str, pred))
+        eval_y = list(map(str, eval_y))
+        print("pred: %s\tlabel: %s\t%d / %d" % (' '.join(pred), ' '.join(eval_y), np.sum(eval_result), self.n))
+
+        return
 
 
 class SNN:
@@ -159,142 +476,3 @@ class SNN:
     def evaluate(self):
         pred = torch.argmin(self.zL).item()
         return pred
-
-
-class SNN_minibatch:
-
-    def __init__(self, sizes):
-
-        self.num_layers = len(sizes)
-        self.sizes = sizes
-        self.weights = [torch.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
-
-    def feedforward(self, x):
-        self.causal_sets = [[] for i in range(self.num_layers - 1)]
-        self.Z = []
-        self.Z.append(torch.exp(torch.tensor(x).type(torch.FloatTensor)))
-        for i, (w, c) in enumerate(zip(self.weights, self.causal_sets)):
-            self.Z.append(self.spike_layer(self.Z[i], w, c))
-
-        self.Z[-1].requires_grad_(True)
-
-        return Variable(self.Z[-1], requires_grad=True)
-
-    def SGD(self, training_data, epochs, mini_batch_size, eta, test_data=None):
-        if test_data:
-            n_test = len(test_data)
-        self.n = len(training_data)
-        for j in range(epochs):
-            # random.shuffle(training_data)
-            mini_batches = [training_data[k:k+mini_batch_size]
-                            for k in range(0, self.n, mini_batch_size)]
-            for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
-            if test_data:
-                print("Epoch %d: %d / %d" % (j, self.evaluate(test_data), n_test))
-            else:
-                print("Epoch: %d\tloss: %.8f\t" % (j, self.loss_average), end='')
-                self.evaluate(training_data)
-
-    def update_mini_batch(self, mini_batch, eta):
-        nabla_weights = [torch.zeros(w.size())for w in self.weights]
-        self.loss_average = 0
-        for x, y in mini_batch:
-            delta_nabla_w = self.backprop(x, y)
-            nabla_weights = [nw+dnw for nw, dnw in zip(nabla_weights, delta_nabla_w)]
-            self.loss_average += self.loss.item()/len(mini_batch)
-        self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_weights)]
-
-    def backprop(self, x, y):
-        nabla_w = [torch.zeros(w.size()) for w in self.weights]
-
-        # feedforward
-        self.zL = self.feedforward(x)
-        delta = self.get_delta(y)
-
-        for l in range(1, self.num_layers):
-            nabla_w_l = self.get_nabla_W(self.Z[-l], self.Z[-(l+1)], self.weights[-l], self.causal_sets[-l])
-            nabla_w[-l] = torch.mul(delta, nabla_w_l.transpose(0, 1)).transpose(0, 1)
-            nabla_z_l = self.get_nabla_z(self.weights[-l], self.causal_sets[-l])
-            delta = torch.mul(delta, nabla_z_l.transpose(0, 1)).transpose(0, 1)
-
-        return nabla_w
-
-    def get_delta(self, y):
-        g = y # label
-        softmax = torch.exp(-self.zL[g]) / torch.exp(-self.zL).sum()
-        self.loss = -torch.log(softmax)
-
-        # backward pass
-        self.loss.backward(self.zL)
-        delta = self.zL.grad.data
-
-        return delta
-
-    # forward pass in spiking networks
-    # input: z: vector of input spike times
-    # input: W: weight matrices. W[i, j] is the weight from neuron j in layer l - 1 to neuron i in layer l
-    # output: z_next: Vector of first spike times of neurons
-    def spike_layer(self, z, w, c):
-        N = w.size()[0]
-        z_next = torch.zeros(N)
-        for i in range(N):
-            tmp_c = self.get_causal_set(z, w[i, :])
-            if tmp_c.size()[0]:
-                z_next[i] = w[i, tmp_c].sum() * z[tmp_c].sum() / (w[i, tmp_c].sum() - 1)
-                c.append(tmp_c)
-            else:
-                z_next[i] = torch.pow(torch.tensor(10), 25)
-        return z_next
-
-    # gets indices of input spikes influencing first spike time of output neuron
-    # input: zr_1: Vector of input spike times of length N
-    # input: wr: Weight vector of the input spikes
-    # Output: C: Causal index set
-    def get_causal_set(self, zr_1, wr):
-        sort_indices = torch.argsort(zr_1)
-        z_sorted = zr_1[sort_indices]
-        w_sorted = wr[sort_indices]
-
-        N = zr_1.size()[0]
-        for i in range(N):
-            if i == N-1:
-                next_input_spike = math.inf
-            else:
-                next_input_spike = z_sorted[i+1]
-            sum = w_sorted.sum()
-            first_cond = sum > 1
-            second_cond = w_sorted.sum() * z_sorted.sum() / (w_sorted.sum() - 1) < next_input_spike
-            if first_cond != second_cond:
-                return sort_indices[:i+1]
-        return torch.Tensor([])
-
-    def get_nabla_W(self, z_out, z_p, w_p, c):
-        nabla_W = torch.zeros(w_p.size())
-        for i, c_tensor in enumerate(c):
-            for j in c_tensor.numpy():
-                nabla_W[i, j] = (z_p[j]-z_out[i]) / (w_p[i, :].sum() - 1)
-
-        return nabla_W
-
-    def get_nabla_z(self, w_p, c):
-        nabla_z = torch.zeros(w_p.size())
-        for i, c_tensor in enumerate(c):
-            for j in c_tensor.numpy():
-                nabla_z[i, j] = w_p[i, j] / (w_p[i, :].sum() - 1)
-
-        return nabla_z
-
-    def evaluate(self, eval_data):
-        eval_data = np.array(list(map(lambda x: x[0] + [x[1]], eval_data)))
-        eval_x = eval_data[:, :-1]
-        eval_y = eval_data[:, -1]
-        pred = []
-        for x in eval_x:
-            pred.append(torch.argmin(self.feedforward(x)).item())
-        eval_result = np.equal(pred, eval_y)
-        pred = list(map(str, pred))
-        eval_y = list(map(str, eval_y))
-        print("pred: %s\tlabel: %s\t%d / %d" % (' '.join(pred), ' '.join(eval_y), np.sum(eval_result), self.n))
-
-        return
