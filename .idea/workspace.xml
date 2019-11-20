@@ -6,17 +6,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1ce357d-41ef-4fbb-83d2-e4de4a379011" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Key-point_spike/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SNN_MNIST.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run_SNN_MNIST.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/.idea/Deep_Learning_with_PyTorch.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Deep_Learning_with_PyTorch/net.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/SNN_xor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_MNIST.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_DNN_MNIST.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_low_level.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_SNN_xor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_xor.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_DNN_xor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_xor_minibatch.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_SNN_xor_minibatch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_xor_weight_sum_cost.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_SNN_xor_final.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +44,6 @@
               <caret selection-end-line="5" selection-end-column="18" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <element signature="e#6987#12284#0" />
-                <element signature="e#12303#17410#0" />
               </folding>
             </state>
           </provider>
@@ -57,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SNN_MNIST.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="100" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="330">
+              <caret line="82" column="39" selection-start-line="82" selection-start-column="39" selection-end-line="82" selection-end-column="39" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -69,7 +64,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/nn/functional.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
+            <state relative-caret-position="45300">
               <caret line="3033" selection-start-line="3033" selection-end-line="3033" />
             </state>
           </provider>
@@ -78,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_DNN_MNIST.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15">
-              <caret line="14" column="50" lean-forward="true" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
+            <state relative-caret-position="135">
+              <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -90,11 +85,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_SNN_MNIST.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="4" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="105">
+              <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -102,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_SNN_xor_final.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
+            <state relative-caret-position="105">
               <caret line="8" selection-start-line="8" selection-end-line="8" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
@@ -126,8 +118,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="743">
-              <caret line="51" column="36" lean-forward="true" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
+            <state relative-caret-position="750">
+              <caret line="51" column="36" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -166,11 +158,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="25" />
-    <option name="width" value="1853" />
-    <option name="height" value="1055" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="960" />
+    <option name="y" value="30" />
+    <option name="width" value="960" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -180,24 +172,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Spiking_neural_networks_with_PyTorch" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Spiking_neural_networks_with_PyTorch" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Key-point_spike" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DeepLearningPython35" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -247,6 +229,9 @@
       <module name="Spiking_neural_networks_with_PyTorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -385,16 +370,19 @@
       <workItem from="1564541342515" duration="21628000" />
       <workItem from="1564630323213" duration="2766000" />
       <workItem from="1564636063492" duration="7614000" />
+      <workItem from="1564706009329" duration="1217000" />
+      <workItem from="1567245312793" duration="763000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101905000" />
+    <option name="totallyTimeSpent" value="103885000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="960" y="30" width="960" height="1050" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14952752" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26710817" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -474,12 +462,12 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor.coverage" NAME="run_xor Coverage Results" MODIFIED="1563865621502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_SNN_MNIST.coverage" NAME="run_SNN_MNIST Coverage Results" MODIFIED="1564644700812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor_weight_sum_cost.coverage" NAME="run_xor_weight_sum_cost Coverage Results" MODIFIED="1564641331472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor_minibatch.coverage" NAME="run_xor_minibatch Coverage Results" MODIFIED="1564545169371" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_low_level.coverage" NAME="run_low_level Coverage Results" MODIFIED="1564460303603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$net.coverage" NAME="net Coverage Results" MODIFIED="1563787389713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_SNN_MNIST.coverage" NAME="run_SNN_MNIST Coverage Results" MODIFIED="1564644700812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_low_level.coverage" NAME="run_low_level Coverage Results" MODIFIED="1564460303603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor.coverage" NAME="run_xor Coverage Results" MODIFIED="1563865621502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Spiking_neural_networks_with_PyTorch$run_xor_weight_sum_cost.coverage" NAME="run_xor_weight_sum_cost Coverage Results" MODIFIED="1564641331472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
@@ -610,6 +598,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SNN_xor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="5" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/nn/functional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45300">
+          <caret line="3033" selection-start-line="3033" selection-end-line="3033" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_DNN_MNIST.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_SNN_MNIST.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_SNN_xor_final.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -622,64 +654,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="743">
-          <caret line="51" column="36" lean-forward="true" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SNN_xor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="5" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#6987#12284#0" />
-            <element signature="e#12303#17410#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_SNN_xor_final.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_SNN_MNIST.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="4" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_DNN_MNIST.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15">
-          <caret line="14" column="50" lean-forward="true" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/nn/functional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="3033" selection-start-line="3033" selection-end-line="3033" />
+        <state relative-caret-position="750">
+          <caret line="51" column="36" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SNN_MNIST.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
+        <state relative-caret-position="330">
+          <caret line="82" column="39" selection-start-line="82" selection-start-column="39" selection-end-line="82" selection-end-column="39" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
